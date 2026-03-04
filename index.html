@@ -23,7 +23,7 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .welcome{padding-top:env(safe-area-inset-top);}
 
 /* WELCOME */
-.welcome{width:100vw;height:100svh;background:radial-gradient(ellipse at 30% 50%, #071428 0%, #020810 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden;}
+.welcome{width:100vw;min-height:100dvh;background:radial-gradient(ellipse at 30% 50%, #071428 0%, #020810 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,2vh,16px);position:relative;overflow-y:auto;padding-bottom:20px;}
 .welcome::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,180,80,0.015) 40px,rgba(0,180,80,0.015) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,180,80,0.015) 40px,rgba(0,180,80,0.015) 41px);pointer-events:none;}
 .w-logos{display:flex;justify-content:center;align-items:center;gap:28px;width:100%;padding:0 32px;position:absolute;top:28px;}
 .w-logo{font-size:1.9rem;font-weight:700;color:#00cc66;line-height:1.1;text-transform:uppercase;letter-spacing:3px;text-shadow:0 0 20px rgba(0,204,102,0.4);}
@@ -36,7 +36,7 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .w-title-line{width:120px;height:2px;background:linear-gradient(to right,transparent,#00cc66,transparent);margin:6px auto 0;}
 .w-sub{font-size:0.8rem;color:#5a7f98;text-align:center;letter-spacing:3px;text-transform:uppercase;margin-top:4px;}
 .w-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;padding:0 22px;margin-top:12px;}
-.btn{padding:12px 20px;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:0.98rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.2s;text-transform:uppercase;}
+.btn{padding:clamp(9px,2vh,12px) 20px;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:clamp(0.85rem,2.5vw,0.98rem);font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.2s;text-transform:uppercase;}
 .btn:active{transform:scale(0.97);}
 .btn-g{background:#00cc66;color:#000;}.btn-g:hover{background:#00ff7f;}
 .btn-b{background:#1a6ab0;color:#fff;border:2px solid #2a8ae0;}.btn-b:hover{background:#2a7acc;}
@@ -52,7 +52,7 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .disc{position:absolute;bottom:14px;font-size:0.72rem;color:#2a4a3a;text-align:center;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
 
 /* MONITOR */
-.monitor{width:100vw;height:100svh;background:#000;display:flex;flex-direction:row;box-sizing:border-box;overflow:hidden;}
+.monitor{width:100vw;height:100dvh;background:#000;display:flex;flex-direction:row;box-sizing:border-box;overflow:hidden;}
 .vals{width:clamp(90px,12vw,145px);min-width:80px;display:flex;flex-direction:column;border-right:1px solid #1a1a1a;overflow:hidden;}
 .vcell{flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding:6px 9px;border-bottom:1px solid #111;}
 .vlbl{font-size:clamp(0.55rem,1.2vw,0.75rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.9;}
@@ -65,7 +65,7 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .ctrls{width:clamp(120px,16vw,155px);min-width:110px;background:#0a1628;display:flex;flex-direction:column;border-left:1px solid #1a2a3a;overflow-y:scroll;padding:5px 5px 60px 5px;gap:4px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 .csec{display:flex;flex-direction:column;gap:3px;}
 .ctitle{font-size:0.88rem;font-weight:700;text-align:center;letter-spacing:2px;padding:2px 0;text-transform:uppercase;}
-.cbtn{width:100%;padding:5px 7px;border:1px solid #2a3a4a;border-radius:5px;background:#0d2035;color:#bbb;font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-align:center;}
+.cbtn{width:100%;padding:5px 7px;border:1px solid #2a3a4a;border-radius:5px;background:#0d2035;color:#bbb;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-align:center;}
 .cbtn:hover{background:#1a3a55;color:#fff;}
 .cbtn.on{background:#1a4a2a;border-color:#00cc66;color:#00ff7f;}
 .cbtn.ora{background:#3a2a0a;border-color:#ff8800;color:#ffaa00;}
@@ -622,8 +622,8 @@ function Monitor({session,onHome}){
           {/* ECG */}
           <div className="csec">
             <div className="ctitle ec">ECG</div>
-            {[['Normal','Normal',75],['V-Tach','VTach',180],['V-Fib','VFib',300],['Asystole','Asystole',0],['PEA','PEA',50]].map(([l,v,r])=>(
-              <button key={v} className={`cbtn ${ecgR===v?'on':''}`} onClick={()=>{setEcgR(v);setHr(r);}}>{l}</button>
+            {[['Normal — Brady','Normal',40],['Normal','Normal',80],['Normal — Tachy','Normal',140],['V-Tach','VTach',180],['V-Fib','VFib',300],['Asystole','Asystole',0],['PEA','PEA',50]].map(([l,v,r])=>(
+              <button key={l} className={`cbtn ${ecgR===v&&hr===r?'on':''}`} onClick={()=>{setEcgR(v);setHr(r);}}>{l}</button>
             ))}
           </div>
           <div className="cdiv"/>
