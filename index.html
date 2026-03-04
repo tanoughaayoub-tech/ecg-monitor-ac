@@ -584,7 +584,7 @@ function Monitor({session,onHome}){
         </div>
         <div className="vcell">
           <span className="vlbl bc">NIBP</span>
-          <span className={`vnum bc ${alarms.bp?'alarm':''}`} style={{fontSize:'1.8rem'}}>{nibpD||`${dSBP}/${dDBP}`}</span>
+          <span className={`vnum bc ${alarms.bp?'alarm':''}`} style={{fontSize:'1.8rem'}}>{nibpD||`${dSBP}/${dDBP} (${Math.round(dDBP+(dSBP-dDBP)/3)})`}</span>
           {nibpN&&<span className="nnext">{nibpN}</span>}
         </div>
         <div className="vcell">
