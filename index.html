@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes, viewport-fit=cover">
 <title>ECG Patient Monitor — Algonquin College</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -48,17 +48,17 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .disc{position:absolute;bottom:14px;font-size:0.72rem;color:#2a4a3a;text-align:center;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
 
 /* MONITOR */
-.monitor{width:100vw;height:100dvh;min-height:-webkit-fill-available;background:#000;display:flex;flex-direction:row;box-sizing:border-box;}
-.vals{width:145px;min-width:110px;display:flex;flex-direction:column;border-right:1px solid #1a1a1a;overflow:hidden;}
+.monitor{width:100vw;height:100dvh;min-height:-webkit-fill-available;background:#000;display:flex;flex-direction:row;box-sizing:border-box;overflow:hidden;}
+.vals{width:clamp(90px,12vw,145px);min-width:80px;display:flex;flex-direction:column;border-right:1px solid #1a1a1a;overflow:hidden;}
 .vcell{flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding:6px 9px;border-bottom:1px solid #111;}
-.vlbl{font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.9;}
-.vnum{font-family:'Share Tech Mono',monospace;font-size:2.5rem;font-weight:700;line-height:1;margin-top:3px;}
-.vsub{font-size:0.75rem;opacity:0.65;margin-top:2px;font-family:'Share Tech Mono',monospace;font-weight:600;}
-.strips{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.vlbl{font-size:clamp(0.55rem,1.2vw,0.75rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.9;}
+.vnum{font-family:'Share Tech Mono',monospace;font-size:clamp(1.4rem,3.5vw,2.5rem);font-weight:700;line-height:1;margin-top:3px;}
+.vsub{font-size:clamp(0.55rem,1.2vw,0.75rem);opacity:0.65;margin-top:2px;font-family:'Share Tech Mono',monospace;font-weight:600;}
+.strips{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;-webkit-overflow-scrolling:touch;}
 .strip{flex:1;position:relative;border-bottom:1px solid #111;overflow:hidden;}
 .strip canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
 .slbl{position:absolute;top:5px;right:10px;font-size:0.7rem;font-weight:700;letter-spacing:2px;opacity:0.75;text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
-.ctrls{width:178px;min-width:140px;background:#0a1628;display:flex;flex-direction:column;border-left:1px solid #1a2a3a;overflow-y:auto;padding:5px;gap:4px;-webkit-overflow-scrolling:touch;}
+.ctrls{width:clamp(140px,20vw,178px);min-width:130px;background:#0a1628;display:flex;flex-direction:column;border-left:1px solid #1a2a3a;overflow-y:scroll;padding:5px 5px 60px 5px;gap:4px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 .csec{display:flex;flex-direction:column;gap:3px;}
 .ctitle{font-size:0.88rem;font-weight:700;text-align:center;letter-spacing:2px;padding:2px 0;text-transform:uppercase;}
 .cbtn{width:100%;padding:5px 7px;border:1px solid #2a3a4a;border-radius:5px;background:#0d2035;color:#bbb;font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-align:center;}
