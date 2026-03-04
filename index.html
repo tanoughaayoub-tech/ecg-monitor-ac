@@ -371,68 +371,58 @@ function Welcome({onStart}){
 
   return(
     <div className="welcome">
-      {/* iOS Add to Home Screen Guide */}
+      {/* iOS Add to Home Screen — mandatory for fullscreen */}
       {showIOSGuide && (
         <div style={{
           position:'fixed',top:0,left:0,width:'100vw',height:'100svh',
-          background:'rgba(0,0,0,0.92)',zIndex:10000,
+          background:'#020e1a',zIndex:10000,
           display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',
-          padding:'24px',backdropFilter:'blur(8px)'
+          padding:'28px',gap:'0px'
         }}>
-          {/* Badge + title */}
-          <div style={{fontSize:'2.5rem',marginBottom:'8px'}}>📱</div>
-          <div style={{fontSize:'1.3rem',fontWeight:700,color:'#00ff7f',letterSpacing:'2px',textTransform:'uppercase',textAlign:'center',marginBottom:'4px'}}>
-            Best Experience on iPhone
+          {/* Logo */}
+          <div style={{fontSize:'3rem',marginBottom:'12px'}}>📱</div>
+
+          {/* Main message */}
+          <div style={{fontSize:'1.4rem',fontWeight:700,color:'#00ff7f',letterSpacing:'2px',textTransform:'uppercase',textAlign:'center',lineHeight:1.2,marginBottom:'6px'}}>
+            Before You Start
           </div>
-          <div style={{fontSize:'0.8rem',color:'#6a8fa8',letterSpacing:'2px',textTransform:'uppercase',marginBottom:'24px',textAlign:'center'}}>
-            Add to Home Screen for Fullscreen Mode
+          <div style={{fontSize:'0.82rem',color:'#5a8fa8',letterSpacing:'1px',textAlign:'center',marginBottom:'28px',lineHeight:1.6,maxWidth:'300px'}}>
+            For the best experience on iPhone & iPad, add this app to your Home Screen first
           </div>
 
           {/* Steps */}
           {[
-            {num:'1', icon:'⬆️', text:'Tap the Share button at the bottom of Safari'},
-            {num:'2', icon:'➕', text:'Tap "Add to Home Screen"'},
-            {num:'3', icon:'✅', text:'Tap "Add" to confirm'},
-            {num:'4', icon:'🚀', text:'Open the app from your Home Screen'},
-          ].map(step => (
-            <div key={step.num} style={{
-              display:'flex',alignItems:'center',gap:'14px',
-              width:'100%',maxWidth:'340px',marginBottom:'14px',
-              background:'rgba(0,180,80,0.08)',border:'1px solid rgba(0,180,80,0.2)',
-              borderRadius:'10px',padding:'12px 16px'
+            {num:'1', emoji:'⬆️', title:'Tap the Share button', sub:'The box with an arrow at the bottom of Safari'},
+            {num:'2', emoji:'➕', title:'Tap "Add to Home Screen"', sub:'Scroll down in the share menu if needed'},
+            {num:'3', emoji:'✔️', title:'Tap "Add"', sub:'Top right corner to confirm'},
+            {num:'4', emoji:'🚀', title:'Open from your Home Screen', sub:'The app will launch in true fullscreen'},
+          ].map((s,i)=>(
+            <div key={i} style={{
+              display:'flex',alignItems:'center',gap:'12px',
+              width:'100%',maxWidth:'320px',marginBottom:'10px',
+              background:'rgba(0,150,70,0.07)',
+              border:'1px solid rgba(0,200,80,0.15)',
+              borderRadius:'12px',padding:'11px 14px'
             }}>
               <div style={{
-                width:'32px',height:'32px',borderRadius:'50%',
-                background:'rgba(0,180,80,0.2)',border:'1px solid #00cc66',
+                width:'28px',height:'28px',borderRadius:'50%',flexShrink:0,
+                background:'rgba(0,180,80,0.15)',border:'1px solid #00aa55',
                 display:'flex',alignItems:'center',justifyContent:'center',
-                fontSize:'0.9rem',fontWeight:700,color:'#00ff7f',flexShrink:0
-              }}>{step.num}</div>
-              <div style={{fontSize:'1.1rem',marginRight:'6px'}}>{step.icon}</div>
-              <div style={{fontSize:'0.88rem',color:'#c0d8c0',lineHeight:1.3}}>{step.text}</div>
+                fontSize:'0.8rem',fontWeight:700,color:'#00ff7f'
+              }}>{s.num}</div>
+              <div style={{fontSize:'1.2rem',flexShrink:0}}>{s.emoji}</div>
+              <div>
+                <div style={{fontSize:'0.88rem',color:'#d0ecd0',fontWeight:700,letterSpacing:'0.5px'}}>{s.title}</div>
+                <div style={{fontSize:'0.72rem',color:'#4a7a6a',marginTop:'1px'}}>{s.sub}</div>
+              </div>
             </div>
           ))}
 
-          {/* Arrow pointing to bottom share button */}
-          <div style={{
-            marginTop:'8px',padding:'8px 0',
-            fontSize:'0.7rem',color:'#3a6a5a',letterSpacing:'1px',
-            textTransform:'uppercase',textAlign:'center'
-          }}>
-            Look for this icon at the bottom of your screen →
-            <span style={{fontSize:'1.2rem',marginLeft:'6px'}}>⬆️</span>
+          {/* Bottom arrow hint */}
+          <div style={{marginTop:'14px',textAlign:'center'}}>
+            <div style={{fontSize:'0.65rem',color:'#2a5a4a',letterSpacing:'2px',textTransform:'uppercase',marginBottom:'4px'}}>Share button is here</div>
+            <div style={{fontSize:'1.8rem',animation:'pulse 1.5s infinite'}}>⬇️</div>
           </div>
-
-          {/* Skip button */}
-          <button onClick={()=>setShowIOSGuide(false)} style={{
-            marginTop:'20px',padding:'10px 28px',
-            background:'transparent',border:'1px solid #2a4a3a',
-            borderRadius:'20px',color:'#4a7a5a',
-            fontFamily:"'Rajdhani',sans-serif",fontSize:'0.8rem',
-            fontWeight:600,letterSpacing:'2px',cursor:'pointer',
-            textTransform:'uppercase'
-          }}>
-            Skip — Continue in Browser
-          </button>
         </div>
       )}
       <div className="w-logos">
