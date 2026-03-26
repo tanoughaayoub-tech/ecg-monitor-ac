@@ -1215,8 +1215,16 @@ function CPRMonitor({session, onHome}){
     setShockCount(v=>v+1);
     setPostShock(true);
     setCprActive(false);
-    // Flash strips
     setTimeout(()=>setPostShock(false),500);
+    // Start 2-min post-shock timer
+    setInstrTimer(0);
+    if(instrTimerRef.current) clearInterval(instrTimerRef.current);
+    instrTimerRef.current = setInterval(()=>{
+      setInstrTimer(v=>{
+        if(v>=120){ clearInterval(instrTimerRef.current); return 120; }
+        return v+1;
+      });
+    },1000);
   }
 
 
@@ -1256,8 +1264,28 @@ function CPRMonitor({session, onHome}){
               <span className="vsub">mmHg</span>
               <span className="vlbl rc" style={{marginTop:4}}>RR</span>
               <span className="vnum rc" style={{fontSize:'1.5rem'}}>{rrDisplay}</span>
-              <span className="vlbl rc" style={{marginTop:4,color:'#ff6666'}}>Shocks</span>
-              <span className="vnum rc" style={{fontSize:'1.8rem',color:'#ff6666'}}>{shockCount}</span>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
+                <div>
+                  <span className="vlbl rc" style={{color:'#ff6666'}}>Shocks</span>
+                  <span className="vnum rc" style={{fontSize:'1.8rem',color:'#ff6666',display:'block'}}>{shockCount}</span>
+                </div>
+                {instrTimer>0&&(
+                  <div style={{
+                    textAlign:'center',
+                    background:instrTimer>=120?'rgba(255,0,0,0.2)':'rgba(255,136,0,0.1)',
+                    border:`1px solid ${instrTimer>=120?'#ff0000':'#ff8800'}`,
+                    borderRadius:'5px',padding:'2px 4px',
+                    animation:instrTimer>=120?'flash 0.5s infinite':'none'
+                  }}>
+                    <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:'0.95rem',color:instrTimer>=120?'#ff4444':'#ffaa00'}}>
+                      {String(Math.floor(instrTimer/60)).padStart(2,'0')}:{String(instrTimer%60).padStart(2,'0')}
+                    </div>
+                    <div style={{fontSize:'0.52rem',color:instrTimer>=120?'#ff4444':'#886633',letterSpacing:'0.5px'}}>
+                      {instrTimer>=120?'SHOCK DUE':'post-shock'}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );
