@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="ECG Monitor">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;ECG Monitor&quot;,&quot;short_name&quot;:&quot;ECG&quot;,&quot;display&quot;:&quot;fullscreen&quot;,&quot;orientation&quot;:&quot;landscape&quot;,&quot;background_color&quot;:&quot;#000000&quot;,&quot;theme_color&quot;:&quot;#000000&quot;}">
+<link rel="manifest" href="manifest.json">
 <style>
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -42,6 +42,8 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .btn-b{background:#1a6ab0;color:#fff;border:2px solid #2a8ae0;}.btn-b:hover{background:#2a7acc;}
 .btn-r{background:#8b1a1a;color:#fff;border:2px solid #cc2222;}.btn-r:hover{background:#aa2222;}
 .btn-gr{background:#2a2a2a;color:#aaa;border:1px solid #444;}
+.btn-cpr{background:linear-gradient(135deg,#4a0000,#8b0000);color:#ff6666;border:2px solid #cc0000;box-shadow:0 0 12px rgba(200,0,0,0.3);}
+.btn-cpr:hover{background:linear-gradient(135deg,#6a0000,#aa0000);box-shadow:0 0 20px rgba(200,0,0,0.5);}
 .btn-home{background:#1a2a1a;color:#00cc66;border:1px solid #2a4a2a;font-size:0.78rem;padding:6px 10px;border-radius:5px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;transition:all 0.15s;}
 .btn-home:hover{background:#2a3a2a;}
 .join-panel{width:100%;max-width:320px;padding:0 22px;display:flex;flex-direction:column;gap:8px;}
@@ -58,19 +60,35 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .vlbl{font-size:clamp(0.55rem,1.2vw,0.75rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.9;}
 .vnum{font-family:'Share Tech Mono',monospace;font-size:clamp(1.4rem,3.5vw,2.5rem);font-weight:700;line-height:1;margin-top:3px;}
 .vsub{font-size:clamp(0.55rem,1.2vw,0.75rem);opacity:0.65;margin-top:2px;font-family:'Share Tech Mono',monospace;font-weight:600;}
-.strips{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;-webkit-overflow-scrolling:touch;}
+.strips{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;max-width:calc(100vw - 145px - 155px);}
 .strip{flex:1;position:relative;border-bottom:1px solid #111;overflow:hidden;min-height:0;}
 .strip canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
 .slbl{position:absolute;top:5px;right:10px;font-size:0.7rem;font-weight:700;letter-spacing:2px;opacity:0.75;text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
 .ctrls{width:clamp(120px,16vw,155px);min-width:110px;background:#0a1628;display:flex;flex-direction:column;border-left:1px solid #1a2a3a;overflow-y:scroll;padding:5px 5px 60px 5px;gap:4px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 .csec{display:flex;flex-direction:column;gap:3px;}
 .ctitle{font-size:0.88rem;font-weight:700;text-align:center;letter-spacing:2px;padding:2px 0;text-transform:uppercase;}
-.cbtn{width:100%;padding:5px 7px;border:1px solid #2a3a4a;border-radius:5px;background:#0d2035;color:#bbb;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-align:center;}
+.cbtn{width:100%;padding:8px 7px;border:1px solid #2a3a4a;border-radius:5px;background:#0d2035;color:#bbb;font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-align:center;}
 .cbtn:hover{background:#1a3a55;color:#fff;}
 .cbtn.on{background:#1a4a2a;border-color:#00cc66;color:#00ff7f;}
 .cbtn.ora{background:#3a2a0a;border-color:#ff8800;color:#ffaa00;}
 .cbtn.sel{background:#1a3a4a;border-color:#00bfff;color:#00bfff;}
 .cdiv{height:1px;background:#1a2a3a;margin:1px 0;}
+.defib-panel{background:#1a0000;border:2px solid #cc0000;border-radius:8px;padding:6px;display:flex;flex-direction:column;gap:4px;}
+.defib-title{color:#ff4444;font-size:0.82rem;font-weight:700;text-align:center;letter-spacing:2px;text-transform:uppercase;}
+.defib-joules{display:flex;gap:3px;}
+.defib-j-btn{flex:1;padding:8px 2px;border:1px solid #cc0000;border-radius:4px;background:#2a0000;color:#ff6666;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;}
+.defib-j-btn.sel{background:#cc0000;color:#fff;border-color:#ff4444;}
+.defib-j-btn:hover{background:#3a0000;}
+.shock-btn{width:100%;padding:11px;border:2px solid #ff4444;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:all 0.2s;}
+.shock-btn.charging{background:#3a1a00;border-color:#ff8800;color:#ff8800;animation:flash 0.3s infinite;}
+.shock-btn.ready{background:#cc0000;border-color:#ff4444;color:#fff;box-shadow:0 0 15px rgba(255,0,0,0.5);animation:flash 0.5s infinite;}
+.shock-btn.idle{background:#1a0000;color:#660000;}
+.airway-btn{width:100%;padding:5px 7px;border:1px solid #2a5a3a;border-radius:5px;background:#0a1a0a;color:#88cc88;font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-align:center;}
+.airway-btn:hover{background:#1a3a1a;color:#aaffaa;}
+.airway-btn.done{background:#1a4a1a;border-color:#00cc66;color:#00ff7f;}
+.etco2-quality{display:flex;gap:3px;margin-top:2px;}
+.eq-btn{flex:1;padding:4px 2px;border:1px solid #2a4a2a;border-radius:4px;background:#0a1a0a;color:#aaa;font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;text-align:center;}
+.eq-btn.on{background:#1a5a1a;border-color:#00cc66;color:#00ff7f;}
 .rinfo{background:#0d1f10;border:1px solid #1a4a1a;border-radius:6px;padding:4px 7px;text-align:center;}
 .rcode{font-family:'Share Tech Mono',monospace;font-size:1.3rem;color:#00ff7f;letter-spacing:6px;}
 .rrole{font-size:0.6rem;color:#6a8a6a;letter-spacing:1px;text-transform:uppercase;}
@@ -84,6 +102,16 @@ body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;overflow:hidde
 .rh{display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-size:1.2rem;color:#00ff7f;text-align:center;padding:32px;}}
 @media screen and (orientation:landscape),screen and (min-width:769px){.rh{display:none;}}
 </style>
+<meta name="theme-color" content="#000000">
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('sw.js')
+        .then(r => console.log('SW registered'))
+        .catch(e => console.log('SW error', e));
+    });
+  }
+</script>
 </head>
 <body>
 <div class="rh">📱 Please rotate your device to landscape mode</div>
@@ -100,7 +128,18 @@ function ecgSample(t,rhythm,hr){
   const cl=60/Math.max(hr,1);
   if(rhythm==='Asystole') return 0.5+(Math.random()-0.5)*0.008;
   if(rhythm==='VFib') return 0.5+Math.sin(t*19.3*Math.PI*2)*0.14+Math.sin(t*23.7*Math.PI*2)*0.09+Math.sin(t*13.1*Math.PI*2)*0.07;
-  if(rhythm==='VTach'){const tc=(t%cl)/cl;return 0.5+Math.sin(tc*Math.PI*2)*0.35;}
+  if(rhythm==='VTach'){
+    const tc=(t%cl)/cl;
+    // Monomorphic VT — smooth sinusoidal wide complex matching classic ECG paper
+    // Tall rounded peaks, deep rounded troughs, slight asymmetry upstroke vs downstroke
+    const phase = tc * Math.PI * 2;
+    // Asymmetric sine: faster upstroke, slower descent — classic VT morphology
+    const asymm = Math.sin(phase - 0.3);
+    // Add slight notching on the downstroke
+    const notch = tc>0.55&&tc<0.70 ? -0.05*Math.sin((tc-0.55)/0.15*Math.PI) : 0;
+    const v = asymm*0.40 + notch;
+    return Math.max(0.04,Math.min(0.96,0.50+v));
+  }
   const tc=(t%cl)/cl,amp=rhythm==='PEA'?0.3:1.0;
   let v=0;
   if(tc>=0.05&&tc<=0.14) v=0.12*Math.sin((tc-0.05)/0.09*Math.PI);
@@ -115,6 +154,78 @@ function spo2Sample(t,hr,pi){
   const cl=60/Math.max(hr,1),tc=(t%cl)/cl;
   let v=tc<0.15?Math.pow(Math.sin(tc/0.15*Math.PI/2),2):tc<0.25?1-(tc-0.15)/0.10*0.15:tc<0.35?0.85+Math.sin((tc-0.25)/0.10*Math.PI)*0.05:Math.max(0,0.85*Math.exp(-(tc-0.35)*4));
   return Math.max(0.05,Math.min(0.95,0.15+v*pi*0.75));
+}
+
+// ── CPR compression artifact on ECG ────────────────
+function cprECGSample(t, compressionRate){
+  const cl = 60/Math.max(compressionRate,1);
+  const tc = (t%cl)/cl;
+  // Realistic CPR: slow rise (compression down), peak, slow fall (recoil), baseline
+  // Matches real CPR artifact — broad sinusoidal with sharp recoil notch
+  if(tc < 0.35){
+    // Compression phase — broad push down
+    const x = tc/0.35;
+    return 0.5 + Math.pow(Math.sin(x*Math.PI),1.2)*0.42;
+  } else if(tc < 0.42){
+    // Recoil notch — sharp dip
+    const x = (tc-0.35)/0.07;
+    return 0.5 - Math.sin(x*Math.PI)*0.22;
+  } else if(tc < 0.55){
+    // Secondary bounce
+    const x = (tc-0.42)/0.13;
+    return 0.5 + Math.sin(x*Math.PI)*0.10;
+  } else {
+    // Baseline with fine noise
+    return 0.5 + (Math.random()-0.5)*0.025;
+  }
+}
+
+// ── ETCO2 during CPR — 30:2 cycle ─────────────────
+// Full CPR cycle: 30 compressions (~18s at 100/min) then 2 breaths (~4s)
+// ETCO2 flat during compressions, 2 waveforms during ventilation, then flat again
+function cprETCO2Sample(t, rr, etco2Quality){
+  const val = 4 + etco2Quality*26;
+  const maxH = Math.min(0.75, val/60);
+  const cycleDur = 22; // ~18s compressions + 4s ventilation
+  const tc = t % cycleDur;
+
+  // First 18s = compressions — flat baseline with tiny artifact
+  if(tc < 18){
+    return 0.08 + (Math.random()-0.5)*0.01;
+  }
+
+  // Last 4s = 2 breaths
+  // Each breath takes 2s: 0.5s rise, 0.8s plateau, 0.5s sharp drop, 0.2s baseline
+  const bt = tc - 18; // 0-4s ventilation window
+  const breathPos = bt % 2; // position within each breath cycle
+
+  if(breathPos < 0.40){
+    const x = breathPos/0.40;
+    return 0.08 + (maxH-0.08)*(1-Math.pow(1-x,1.8));  // rise
+  } else if(breathPos < 0.90){
+    return maxH + (breathPos-0.40)*0.02;                // plateau
+  } else if(breathPos < 1.15){
+    const x = (breathPos-0.90)/0.25;
+    return (maxH+0.01)-(maxH+0.01-0.08)*Math.pow(x,0.3); // sharp drop
+  } else {
+    return 0.08;                                         // flat baseline between breaths
+  }
+}
+
+// ── BVM breath on SPO2 strip ────────────────────────
+function bvmSPO2Sample(t, comprRate, pi){
+  // During CPR: pleth is driven by chest compressions, NOT breath rate
+  // Each compression produces a small pulsatile waveform — low amplitude
+  // Waveform varies with ventilation (amplitude rises during breath)
+  const cl=60/Math.max(comprRate,1), tc=(t%cl)/cl;
+  // Small compression-driven pulse — narrow, low amplitude
+  let v=0;
+  if(tc<0.15)      v=Math.pow(Math.sin(tc/0.15*Math.PI),1.4)*0.7;  // compression upstroke
+  else if(tc<0.28) v=0.7*(1-(tc-0.15)/0.13);                        // downstroke
+  else if(tc<0.38) v=-0.15*Math.sin((tc-0.28)/0.10*Math.PI);        // dicrotic notch
+  else             v=0;                                               // baseline
+  // pi controls amplitude (poor perfusion = low amplitude)
+  return Math.max(0.05,Math.min(0.95,0.30+v*pi*0.65));
 }
 
 function etco2Sample(t,rr,val){
@@ -244,6 +355,78 @@ class AudioEngine {
   setMuted(m){
     this.muted=m;
     if(m)this.stopFlatline();
+  }
+
+  // Defib charging sound — rising whine
+  startCharge(joules, onComplete){
+    if(!this.ctx) return;
+    const ctx=this.ctx;
+    const duration = joules===200?2.0:joules===300?2.8:3.5;
+    const t=ctx.currentTime;
+
+    // Rising whine oscillator
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    const filter=ctx.createBiquadFilter();
+    osc.type='sawtooth';
+    osc.frequency.setValueAtTime(200,t);
+    osc.frequency.exponentialRampToValueAtTime(2200,t+duration);
+    filter.type='bandpass';
+    filter.frequency.value=1000;
+    filter.Q.value=0.5;
+    osc.connect(filter);filter.connect(gain);gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0,t);
+    gain.gain.linearRampToValueAtTime(0.25,t+0.1);
+    gain.gain.setValueAtTime(0.25,t+duration-0.1);
+    gain.gain.linearRampToValueAtTime(0,t+duration);
+    osc.start(t);osc.stop(t+duration);
+
+    // Ready beep at end
+    const beep=ctx.createOscillator();
+    const bg=ctx.createGain();
+    beep.type='sine';beep.frequency.value=1800;
+    beep.connect(bg);bg.connect(ctx.destination);
+    bg.gain.setValueAtTime(0,t+duration);
+    bg.gain.linearRampToValueAtTime(0.4,t+duration+0.05);
+    bg.gain.exponentialRampToValueAtTime(0.001,t+duration+0.4);
+    beep.start(t+duration);beep.stop(t+duration+0.5);
+
+    this.chargeTimer=setTimeout(onComplete, duration*1000);
+  }
+
+  stopCharge(){
+    if(this.chargeTimer) clearTimeout(this.chargeTimer);
+  }
+
+  // Shock delivery — loud thud
+  shock(){
+    if(!this.ctx) return;
+    const ctx=this.ctx;
+    const t=ctx.currentTime;
+
+    // Low thud
+    const buf=ctx.createBuffer(1,ctx.sampleRate*0.3,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<data.length;i++){
+      data[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.08));
+    }
+    const src=ctx.createBufferSource();
+    const gain=ctx.createGain();
+    const filter=ctx.createBiquadFilter();
+    filter.type='lowpass';filter.frequency.value=200;
+    src.buffer=buf;
+    src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);
+    gain.gain.value=1.5;
+    src.start(t);
+
+    // High crack
+    const osc=ctx.createOscillator();
+    const og=ctx.createGain();
+    osc.type='square';osc.frequency.value=80;
+    osc.connect(og);og.connect(ctx.destination);
+    og.gain.setValueAtTime(0.6,t);
+    og.gain.exponentialRampToValueAtTime(0.001,t+0.15);
+    osc.start(t);osc.stop(t+0.2);
   }
 }
 const audio=new AudioEngine();
@@ -418,6 +601,7 @@ function Welcome({onStart}){
           <button className="btn btn-g" onClick={()=>{audio.init();onStart({mode:'solo',roomCode:''});}}>▶ Start Simulation</button>
           <button className="btn btn-b" onClick={()=>{audio.init();onStart({mode:'instructor',roomCode:String(Math.floor(1000+Math.random()*9000))});}}>📡 Start Room — Instructor</button>
           <button className="btn btn-r" onClick={()=>setPhase('join')}>🎓 Join Room — Student</button>
+          <button className="btn btn-cpr" onClick={()=>{audio.init();onStart({mode:'cpr',roomCode:String(Math.floor(1000+Math.random()*9000))});}}>🫀 CPR / Resuscitation</button>
         </div>
       )}
       {phase==='join'&&(
@@ -436,6 +620,183 @@ function Welcome({onStart}){
 }
 
 // ── Monitor ─────────────────────────────────────────
+// ── CPR Student View ────────────────────────────────
+function CPRStudentView({data, roomCode, onHome}){
+  const [shockTimer,setShockTimer] = useState(0);
+  const [timerRunning,setTimerRunning] = useState(false);
+  const [lastShockCount,setLastShockCount] = useState(0);
+  const [studentJoules,setStudentJoules] = useState(200);
+  const [studentDefibState,setStudentDefibState] = useState('idle');
+  const [studentShockCount,setStudentShockCount] = useState(0);
+
+  // Start timer when shock delivered
+  useEffect(()=>{
+    if(data.shockCount > lastShockCount){
+      setLastShockCount(data.shockCount);
+      setShockTimer(0);
+      setTimerRunning(true);
+    }
+  },[data.shockCount]);
+
+  // Count up timer after shock
+  useEffect(()=>{
+    if(!timerRunning) return;
+    const id=setInterval(()=>setShockTimer(v=>v+1),1000);
+    return()=>clearInterval(id);
+  },[timerRunning]);
+
+  function handleStudentCharge(){
+    if(studentDefibState!=='idle') return;
+    audio.init(); // ensure audio context active
+    setStudentDefibState('charging');
+    audio.startCharge(studentJoules,()=>setStudentDefibState('ready'));
+  }
+  function handleStudentShock(){
+    if(studentDefibState!=='ready') return;
+    audio.shock();
+    setStudentDefibState('idle');
+    setStudentShockCount(v=>v+1);
+    // Start 2-min timer
+    setShockTimer(0);
+    setTimerRunning(true);
+  }
+
+  // Generators based on remote data
+  const rhythmHR={'Normal':75,'VTach':180,'VFib':300,'Asystole':0,'PEA':50};
+  const ecgGen = useCallback((t)=>
+    data.cprActive ? cprECGSample(t, data.comprRate||100)
+                   : ecgSample(t, data.ecgRhythm, rhythmHR[data.ecgRhythm]||0),
+    [data.cprActive, data.comprRate, data.ecgRhythm]);
+
+  const spo2Gen = useCallback((t)=>{
+    const as=data.airwayStep||0;
+    const cr=data.comprRate||100;
+    if(as===0) return bvmSPO2Sample(t,cr,0.08);  // poor pleth at start
+    if(as===1) return bvmSPO2Sample(t,cr,0.18);  // OPA
+    if(as===2) return bvmSPO2Sample(t,cr,0.28);  // + Suction
+    if(as>=3)  return bvmSPO2Sample(t,cr,0.50);  // BVM — better
+    return 0.08;
+  },[data.airwayStep,data.comprRate]);
+
+  const ventStartRef = useRef(0);
+  useEffect(()=>{
+    ventStartRef.current = Date.now()/1000;
+  },[data.ventCycle]);
+
+  const etco2Gen = useCallback((t)=>{
+    if((data.airwayStep||0)<4) return 0.08+(Math.random()-0.5)*0.008;
+    const elapsed = Date.now()/1000 - ventStartRef.current;
+    if(elapsed>=4.0) return 0.08+(Math.random()-0.5)*0.008; // flat after exactly 2 breaths
+    const maxH=Math.min(0.75,(4+(data.etco2Quality||0)*26)/60);
+    const bp=elapsed%2;
+    if(bp<0.40){const x=bp/0.40;return 0.08+(maxH-0.08)*(1-Math.pow(1-x,1.8));}
+    else if(bp<0.90) return maxH+(bp-0.40)*0.02;
+    else if(bp<1.20){const x=(bp-0.90)/0.30;return(maxH+0.01)-(maxH+0.01-0.08)*Math.pow(x,0.3);}
+    return 0.08;
+  },[data.ventCycle, data.etco2Quality, data.airwayStep]);
+
+  const spo2Display = (data.airwayStep||0)===0?'--':(data.airwayStep||0)<=2?'52':'60';
+  const timerStr = `${String(Math.floor(shockTimer/60)).padStart(2,'0')}:${String(shockTimer%60).padStart(2,'0')}`;
+
+  return(
+    <div className="monitor">
+      {/* Values */}
+      <div className="vals">
+        <div className="vcell">
+          <span className="vlbl ec">ECG</span>
+          <span className="vnum ec" style={{fontSize:'1rem',marginTop:4}}>{data.ecgRhythm==='Normal'?'ROSC':'—'}</span>
+          <span className="vsub">{data.cprActive?'CPR':data.ecgRhythm}</span>
+        </div>
+        <div className="vcell">
+          <span className="vlbl sc">SPO2</span>
+          <span className={`vnum sc ${(data.airwayStep||0)>0?'alarm':''}`}
+            style={{fontSize:(data.airwayStep||0)===0?'1.5rem':'2rem'}}>
+            {spo2Display}
+          </span>
+          <span className="vsub">{(data.airwayStep||0)>0?'%':''}</span>
+        </div>
+        <div className="vcell">
+          <span className="vlbl bc">NIBP</span>
+          <span className="vnum bc" style={{fontSize:'1.3rem'}}>{data.ecgRhythm==='Normal'?'90/60':'—/—'}</span>
+        </div>
+        <div className="vcell">
+          <span className="vlbl xc">ETCO2</span>
+          <span className={`vnum xc ${(data.etco2||4)<10?'alarm':''}`}>{data.etco2||4}</span>
+          <span className="vsub">mmHg</span>
+          <span className="vlbl rc" style={{marginTop:4}}>RR</span>
+          <span className="vnum rc" style={{fontSize:'1.5rem'}}>{data.rr||0}</span>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
+            <div>
+              <span className="vlbl rc" style={{color:'#ff6666'}}>Shocks</span>
+              <span className="vnum rc" style={{fontSize:'1.5rem',color:'#ff6666',display:'block'}}>{(data.shockCount||0)+studentShockCount}</span>
+            </div>
+            {timerRunning&&(
+              <div style={{
+                textAlign:'center',
+                background:shockTimer>=120?'rgba(255,0,0,0.2)':'rgba(255,136,0,0.1)',
+                border:`1px solid ${shockTimer>=120?'#ff0000':'#ff8800'}`,
+                borderRadius:'5px',padding:'2px 4px',
+                animation:shockTimer>=120?'flash 0.5s infinite':'none'
+              }}>
+                <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:'0.95rem',color:shockTimer>=120?'#ff4444':'#ffaa00'}}>
+                  {String(Math.floor(shockTimer/60)).padStart(2,'0')}:{String(shockTimer%60).padStart(2,'0')}
+                </div>
+                <div style={{fontSize:'0.52rem',color:shockTimer>=120?'#ff4444':'#886633',letterSpacing:'0.5px'}}>
+                  {shockTimer>=120?'SHOCK DUE':'post-shock'}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Strips */}
+      <div className="strips">
+        <WaveCanvas gen={ecgGen}  color="#00ff7f" label={data.cprActive?'CPR — ECG':'ECG II LEAD'} lineWidth={2.5} key="stu-ecg"/>
+        <WaveCanvas gen={spo2Gen} color="#00bfff" label="Pleth / BVM" lineWidth={2.5} key="stu-spo2"/>
+        <WaveCanvas gen={etco2Gen}color="#ffd700" label="CO2" lineWidth={2.5} key="stu-etco2"/>
+      </div>
+
+      {/* Student CPR panel */}
+      <div className="ctrls">
+        <div className="topbar">
+          <button className="btn-home" onClick={onHome}>🏠 Home</button>
+          <Clock/>
+        </div>
+        <div className="rinfo">
+          <div className="rcode">{roomCode}</div>
+          <div className="rrole">Student — CPR</div>
+        </div>
+
+
+
+        {/* Defib */}
+        <div className="defib-panel" style={{marginTop:'6px'}}>
+          <div className="defib-title">⚡ Defibrillator</div>
+          <div className="defib-joules">
+            {[200,300,360].map(j=>(
+              <button key={j} className={`defib-j-btn ${studentJoules===j?'sel':''}`}
+                onClick={()=>{if(studentDefibState==='idle')setStudentJoules(j);}}>
+                {j}J
+              </button>
+            ))}
+          </div>
+          <button className={`shock-btn ${studentDefibState}`}
+            onClick={studentDefibState==='idle'?handleStudentCharge:studentDefibState==='ready'?handleStudentShock:undefined}>
+            {studentDefibState==='idle'?`⚡ Charge ${studentJoules}J`:studentDefibState==='charging'?'Charging...':'SHOCK — STAND CLEAR'}
+          </button>
+        </div>
+
+        {/* Instructor rhythm info */}
+        <div style={{marginTop:'8px',textAlign:'center',color:'#4a6a4a',fontSize:'0.7rem',letterSpacing:'1px'}}>
+          Instructor controls vitals &amp; rhythm
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 function Monitor({session,onHome}){
   const {mode,roomCode}=session;
   const isInst=mode!=='student';
@@ -465,8 +826,14 @@ function Monitor({session,onHome}){
   const [dia,setDia]=useState(80);
   // Sound
   const [muted,setMuted]=useState(false);
+  // Student defib
+  const [studentJoules,setStudentJoules]=useState(200);
+  const [studentDefibState,setStudentDefibState]=useState('idle');
+  const [studentShockCount,setStudentShockCount]=useState(0);
   // Alarms
   const [alarms,setAlarms]=useState({});
+  const [isCPRMode,setIsCPRMode]=useState(session.mode==='cpr');
+  const [remoteData,setRemoteData]=useState(null);
 
   const noiseR=useRef({hr:Math.random()*100,spo2:Math.random()*100,sbp:Math.random()*100,dbp:Math.random()*100,etco2:Math.random()*100,rr:Math.random()*100});
   const sRef=useRef({});
@@ -529,14 +896,34 @@ function Monitor({session,onHome}){
     }else{
       const id=setInterval(async()=>{
         const d=await fr(roomCode);if(!d)return;
+        if(d.mode==='cpr'){
+          // CPR room — switch to CPR student view
+          setRemoteData(d);
+          setIsCPRMode(true);
+          return;
+        }
+        setIsCPRMode(false);
         setEcgR(d.ecgRhythm);setHr(d.hr);setSpo2Val(d.spo2);setPerf(d.perfusion);
-        setSys(d.systolic);setDia(d.diastolic);setEtco2(d.etco2);setRr(d.rr);
+        setSys(d.systolic);setDia(d.diastolic);setBpSt(d.bpState||'Normal');setEtco2(d.etco2);setRr(d.rr);
       },1000);
       return()=>clearInterval(id);
     }
   },[roomCode,isInst]);
 
   // NIBP
+  function handleStudentCharge(){
+    if(studentDefibState!=='idle') return;
+    audio.init(); // ensure audio context active
+    setStudentDefibState('charging');
+    audio.startCharge(studentJoules,()=>setStudentDefibState('ready'));
+  }
+  function handleStudentShock(){
+    if(studentDefibState!=='ready') return;
+    audio.shock();
+    setStudentDefibState('idle');
+    setStudentShockCount(v=>v+1);
+  }
+
   useEffect(()=>{
     if(!nibpOn){setNibpN('');setNibpD('');return;}
     let cd=nibpInterval*60;
@@ -567,6 +954,11 @@ function Monitor({session,onHome}){
 
   // SPO2 preset helper
   function setSPO2Preset(val,pi){setSpo2Val(val);setPerf(pi);}
+
+  // Safe to do conditional render AFTER all hooks
+  if(!isInst && isCPRMode && remoteData){
+    return <CPRStudentView data={remoteData} roomCode={roomCode} onHome={onHome}/>;
+  }
 
   return(
     <div className="monitor">
@@ -599,9 +991,9 @@ function Monitor({session,onHome}){
 
       {/* Waveforms — 3 strips (no BP waveform) */}
       <div className="strips">
-        <WaveCanvas gen={ecgG}  color="#00ff7f" label="ECG II LEAD" lineWidth={2.5} key="ecg"/>
-        <WaveCanvas gen={spo2G} color="#00bfff" label="Pleth"       lineWidth={2.5} key="spo2"/>
-        <WaveCanvas gen={etG}   color="#ffd700" label="CO2"         lineWidth={2.5} key="etco2"/>
+        <WaveCanvas gen={ecgG}  color="#00ff7f" label="ECG II LEAD" lineWidth={2.5} key="ecg-strip"/>
+        <WaveCanvas gen={spo2G} color="#00bfff" label="Pleth"       lineWidth={2.5} key="spo2-strip"/>
+        <WaveCanvas gen={etG}   color="#ffd700" label="CO2"         lineWidth={2.5} key="etco2-strip"/>
       </div>
 
       {/* Controls */}
@@ -694,11 +1086,312 @@ function Monitor({session,onHome}){
   );
 }
 
+// ── CPR Monitor Component ───────────────────────────
+function CPRMonitor({session, onHome}){
+  const {roomCode} = session;
+
+  // CPR state
+  const [cprActive,setCprActive]    = useState(false);
+  const [comprRate,setComprRate]    = useState(100);
+  const [etco2Quality,setEtco2Q]    = useState(0.3); // 0-1
+  const [airwayStep,setAirwayStep]  = useState(0);
+  const [ventCycle,setVentCycle]    = useState(0); // increments each time instructor clicks ventilate // 0=none,1=OPA,2=suction,3=BVM,4=ventilating
+  const [rhythm,setRhythm]          = useState('VFib');
+  const [postShock,setPostShock]    = useState(false);
+
+  // Defib state
+  const [joules,setJoules]          = useState(200);
+  const [defibState,setDefibState]  = useState('idle');
+  const [instrTimer,setInstrTimer]  = useState(0); // idle|charging|ready
+  const [shockCount,setShockCount]  = useState(0);
+  const instrTimerRef = useRef(null);
+
+  // Display values
+  const [dispETCO2,setDispETCO2]    = useState(5);
+  const [dispHR,setDispHR]          = useState(0);
+
+  const sRef = useRef({cprActive,comprRate,etco2Quality,airwayStep,rhythm,shockCount,ventCycle});
+  useEffect(()=>{sRef.current={cprActive,comprRate,etco2Quality,airwayStep,rhythm,shockCount,ventCycle};},[cprActive,comprRate,etco2Quality,airwayStep,rhythm,shockCount,ventCycle]);
+
+  // Update display ETCO2 based on quality
+  useEffect(()=>{
+    const val = airwayStep>=3 ? (5+etco2Quality*30) : 5;
+    setDispETCO2(Math.round(val));
+    setDispHR(rhythm==='Normal'?75:rhythm==='VFib'?0:0);
+  },[etco2Quality,airwayStep,rhythm]);
+
+  // Firebase sync
+  useEffect(()=>{
+    if(!roomCode) return;
+    const id=setInterval(()=>{
+      const s=sRef.current;
+      const rhythmHR={'Normal':75,'VTach':180,'VFib':300,'Asystole':0,'PEA':50};
+      // SPO2 based on airway step
+      const spo2Val = s.airwayStep===0?0:s.airwayStep<=2?52:s.airwayStep===3?60:88;
+      const perfVal = s.airwayStep===0?0.05:s.airwayStep<=2?0.12:s.airwayStep===3?0.20:0.55;
+      // ETCO2 based on airway + quality
+      const etco2Val = s.airwayStep>=4 ? Math.round(4+s.etco2Quality*26) : 4;
+      const rrVal    = s.airwayStep>=4 ? 8 : 0;
+      fw(roomCode,{
+        mode:'cpr',
+        ecgRhythm:s.rhythm,
+        hr:rhythmHR[s.rhythm]||0,
+        cprActive:s.cprActive,
+        comprRate:s.comprRate,
+        spo2:spo2Val,
+        perfusion:perfVal,
+        comprRate:s.comprRate,
+        systolic:s.rhythm==='Normal'?90:0,
+        diastolic:s.rhythm==='Normal'?60:0,
+        bpState:'Normal',
+        etco2:etco2Val,
+        rr:rrVal,
+        airwayStep:s.airwayStep,
+        etco2Quality:s.etco2Quality,
+        shockCount:s.shockCount,
+        ventCycle:s.ventCycle
+      });
+    },500);
+    return()=>clearInterval(id);
+  },[roomCode]);
+
+  // Generators — always pass correct HR for each rhythm
+  const rhythmHR = {'Normal':75,'VTach':180,'VFib':300,'Asystole':0,'PEA':50};
+  const ecgGen  = useCallback((t)=>
+    cprActive ? cprECGSample(t,comprRate) : ecgSample(t,rhythm, rhythmHR[rhythm]||0),
+    [cprActive,comprRate,rhythm]);
+
+  // SPO2: compression-driven pleth — improves with each airway step
+  const spo2Gen = useCallback((t)=>{
+    if(airwayStep===0) return bvmSPO2Sample(t,comprRate,0.08);  // poor pleth — compressions only, very low amp
+    if(airwayStep===1) return bvmSPO2Sample(t,comprRate,0.18);  // OPA — slightly better
+    if(airwayStep===2) return bvmSPO2Sample(t,comprRate,0.28);  // + Suction — improving
+    if(airwayStep>=3)  return bvmSPO2Sample(t,comprRate,0.50);  // BVM + ventilating — noticeably better
+    return 0.08;
+  },[airwayStep,comprRate]);
+
+  // Track when each ventilation cycle started
+  const ventStartRef = useRef(0);
+  useEffect(()=>{
+    if(ventCycle>0) ventStartRef.current = Date.now()/1000;
+  },[ventCycle]);
+
+  // ETCO2: flat until vent button clicked, shows 2 breaths (~4s) then flat again
+  const etco2GenRef = useRef({ventCycle,etco2Quality,airwayStep});
+  useEffect(()=>{etco2GenRef.current={ventCycle,etco2Quality,airwayStep};},[ventCycle,etco2Quality,airwayStep]);
+
+  const etco2Gen = useCallback((t)=>{
+    const {airwayStep:as, etco2Quality:eq} = etco2GenRef.current;
+    if(as<4) return 0.08 + (Math.random()-0.5)*0.008; // flat before ventilation
+    // Time since last vent button click
+    const elapsed = Date.now()/1000 - ventStartRef.current;
+    // Show 2 breaths (4s window) then go flat
+    if(elapsed >= 4.0) return 0.08 + (Math.random()-0.5)*0.008; // strictly flat after exactly 2 breaths
+    // 2 breath waveforms — each breath 2s, strictly cut at 4.0s
+    const maxH = Math.min(0.75,(4+eq*26)/60);
+    const breathPos = elapsed % 2; // position within each 2s breath
+    if(breathPos<0.40){
+      const x=breathPos/0.40;
+      return 0.08+(maxH-0.08)*(1-Math.pow(1-x,1.8));
+    } else if(breathPos<0.90){
+      return maxH+(breathPos-0.40)*0.02;
+    } else if(breathPos<1.20){
+      const x=(breathPos-0.90)/0.30;
+      return (maxH+0.01)-(maxH+0.01-0.08)*Math.pow(x,0.3);
+    }
+    return 0.08;
+  },[]);
+
+  function handleCharge(){
+    if(defibState==='charging'||defibState==='ready') return;
+    setDefibState('charging');
+    audio.startCharge(joules,()=>{setDefibState('ready');});
+  }
+
+  function handleShock(){
+    if(defibState!=='ready') return;
+    audio.shock();
+    setDefibState('idle');
+    setShockCount(v=>v+1);
+    setPostShock(true);
+    setCprActive(false);
+    // Flash strips
+    setTimeout(()=>setPostShock(false),500);
+  }
+
+
+
+  return(
+    <div className="monitor">
+      {/* Values — dynamic based on airway steps */}
+      {(()=>{
+        // SPO2 value based on airway progress
+        const spo2Display = airwayStep===0?'--':airwayStep<=2?'52':airwayStep===3?'60':airwayStep>=4?'60':'--';
+
+        // ETCO2 value based on airway + quality
+        const etco2Display = airwayStep>=4 ? Math.round(4+etco2Quality*26) : 4;
+        const rrDisplay    = airwayStep>=4 ? 8 : 0;
+        return(
+          <div className="vals">
+            <div className="vcell">
+              <span className="vlbl ec">ECG</span>
+              <span className="vnum ec" style={{fontSize:'1rem',marginTop:4}}>{rhythm==='Normal'?'ROSC':'—'}</span>
+              <span className="vsub">{cprActive?'CPR':rhythm}</span>
+            </div>
+            <div className="vcell">
+              <span className="vlbl sc">SPO2</span>
+              <span className={`vnum sc ${airwayStep>0?'alarm':''}`}
+                style={{fontSize:airwayStep===0?'1.5rem':'2rem'}}>
+                {spo2Display}
+              </span>
+              <span className="vsub">{airwayStep>0?'%':''}</span>
+            </div>
+            <div className="vcell">
+              <span className="vlbl bc">NIBP</span>
+              <span className="vnum bc" style={{fontSize:'1.3rem'}}>{rhythm==='Normal'?'90/60':'—/—'}</span>
+            </div>
+            <div className="vcell">
+              <span className="vlbl xc">ETCO2</span>
+              <span className={`vnum xc ${etco2Display<10?'alarm':''}`}>{etco2Display}</span>
+              <span className="vsub">mmHg</span>
+              <span className="vlbl rc" style={{marginTop:4}}>RR</span>
+              <span className="vnum rc" style={{fontSize:'1.5rem'}}>{rrDisplay}</span>
+              <span className="vlbl rc" style={{marginTop:4,color:'#ff6666'}}>Shocks</span>
+              <span className="vnum rc" style={{fontSize:'1.8rem',color:'#ff6666'}}>{shockCount}</span>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Strips — 3 strips */}
+      <div className="strips">
+        <WaveCanvas gen={ecgGen}  color={postShock?'#ffffff':'#00ff7f'} label={cprActive?'CPR — ECG':'ECG II LEAD'} lineWidth={2.5} key="cpr-ecg"/>
+        <WaveCanvas gen={spo2Gen} color="#00bfff" label="Pleth / BVM" lineWidth={2.5} key="cpr-spo2"/>
+        <WaveCanvas gen={etco2Gen}color="#ffd700" label="CO2" lineWidth={2.5} key="cpr-etco2"/>
+      </div>
+
+      {/* CPR Controls */}
+      <div className="ctrls">
+        <div className="topbar">
+          <button className="btn-home" onClick={()=>{audio.stopFlatline();audio.stopCharge();onHome();}}>🏠 Home</button>
+          <Clock/>
+        </div>
+
+        {roomCode&&(
+          <div className="rinfo">
+            <div className="rcode">{roomCode}</div>
+            <div className="rrole">CPR Instructor</div>
+          </div>
+        )}
+
+
+        {/* CPR toggle */}
+        <div className="csec">
+          <div className="ctitle" style={{color:'#ff4444'}}>CPR</div>
+          <button className={`cbtn ${cprActive?'on':''}`}
+            onClick={()=>setCprActive(v=>!v)}
+            style={{background:cprActive?'#4a0000':'',borderColor:cprActive?'#ff4444':'',color:cprActive?'#ff6666':''}}>
+            {cprActive?'⏸ Stop CPR':'▶ Start CPR'}
+          </button>
+          {cprActive&&(
+            <div style={{display:'flex',gap:'3px',marginTop:'2px'}}>
+              {[80,100,120].map(r=>(
+                <button key={r} className={`cbtn ${comprRate===r?'on':''}`}
+                  style={{flex:1,fontSize:'0.72rem'}}
+                  onClick={()=>setComprRate(r)}>{r}/min</button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="cdiv"/>
+
+        {/* Ventilation — always visible */}
+        <div className="csec">
+          <div className="ctitle" style={{color:'#00bfff'}}>Ventilation</div>
+          <button
+            onClick={()=>{setVentCycle(v=>v+1);setAirwayStep(4);}}
+            style={{
+              width:'100%',padding:'10px 7px',
+              border:'2px solid #ffd700',borderRadius:'6px',
+              background:'#1a1500',color:'#ffd700',
+              fontFamily:"'Rajdhani',sans-serif",
+              fontSize:'0.92rem',fontWeight:700,
+              cursor:'pointer',letterSpacing:'1px',textAlign:'center',
+              boxShadow:'0 0 10px rgba(255,215,0,0.25)'
+            }}>
+            ⚡ Ventilate — 2 Breaths
+          </button>
+          <button
+            onClick={()=>{setAirwayStep(0);setVentCycle(0);}}
+            style={{
+              width:'100%',padding:'5px 7px',marginTop:'3px',
+              border:'1px solid #3a1a1a',borderRadius:'5px',
+              background:'transparent',color:'#664444',
+              fontFamily:"'Rajdhani',sans-serif",fontSize:'0.72rem',
+              fontWeight:600,cursor:'pointer',textAlign:'center'
+            }}>
+            Reset Ventilation
+          </button>
+        </div>
+
+        <div className="cdiv"/>
+
+        {/* ETCO2 quality */}
+        <div className="csec">
+          <div className="ctitle xc">ETCO2 Quality</div>
+          <div className="etco2-quality">
+            {[['Poor',0],['Fair',0.5],['Good',1]].map(([l,v])=>(
+              <button key={l} className={`eq-btn ${etco2Quality===v?'on':''}`}
+                onClick={()=>setEtco2Q(v)}>{l}</button>
+            ))}
+          </div>
+        </div>
+
+        <div className="cdiv"/>
+
+        {/* Defib */}
+        <div className="defib-panel">
+          <div className="defib-title">⚡ Defibrillator</div>
+          <div className="defib-joules">
+            {[200,300,360].map(j=>(
+              <button key={j} className={`defib-j-btn ${joules===j?'sel':''}`}
+                onClick={()=>{if(defibState==='idle')setJoules(j);}}>
+                {j}J
+              </button>
+            ))}
+          </div>
+          <button
+            className={`shock-btn ${defibState}`}
+            onClick={defibState==='idle'?handleCharge:defibState==='ready'?handleShock:undefined}>
+            {defibState==='idle'?`⚡ Charge ${joules}J`:defibState==='charging'?'Charging...':'SHOCK — STAND CLEAR'}
+          </button>
+        </div>
+
+        <div className="cdiv"/>
+
+        {/* Post shock rhythm */}
+        <div className="csec">
+          <div className="ctitle ec">Post-Shock</div>
+          {[['VFib','VFib'],['VTach','VTach'],['Asystole','Asystole'],['PEA','PEA'],['ROSC','Normal']].map(([l,v])=>(
+            <button key={v} className={`cbtn ${rhythm===v?'on':''}`}
+              onClick={()=>{setRhythm(v);setCprActive(false);}}>
+              {l}
+            </button>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 function App(){
   const [session,setSession]=useState(null);
-  return session
-    ?<Monitor session={session} onHome={()=>setSession(null)}/>
-    :<Welcome onStart={setSession}/>;
+  if(!session) return <Welcome onStart={setSession}/>;
+  if(session.mode==='cpr') return <CPRMonitor session={session} onHome={()=>setSession(null)}/>;
+  if(session.mode==='student-cpr') return <CPRStudentView data={session.data} roomCode={session.roomCode} onHome={()=>setSession(null)}/>;
+  return <Monitor session={session} onHome={()=>setSession(null)}/>;
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
